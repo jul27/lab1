@@ -1,9 +1,12 @@
 package ru.bstu.iitus.kb51.jac;
 
+import static ru.bstu.iitus.kb51.jac.Constans.TYPE;
+import static ru.bstu.iitus.kb51.jac.Reader.getString;
+
 class Tunnel extends WayConstructions {
     private String type;
 
-    private void setType(String type) {
+    void setType(String type) {
         this.type = type;
     }
 
@@ -11,19 +14,12 @@ class Tunnel extends WayConstructions {
         return type;
     }
 
-    public void init() {
-        setName(getString("Введите название: "));
-        setExploitationPeriod(getInt("Введите срок эксплуатации: "));
-        setType(getString("Тип туннеля: "));
-        setMaterial(getString("Материал: "));
-        setLength(getInt("Длина туннеля: "));
-    }
-
-    Tunnel() {
-        init();
+    public void init() throws InputTypeException {
+        super.init();
+        setType(getString(TYPE));
     }
 
     public String toString() {
-        return super.toString() + "тип туннеля - " + getType() + "\n";
+        return super.toString() + TYPE + getType() + "\n";
     }
 }

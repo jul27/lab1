@@ -1,5 +1,8 @@
 package ru.bstu.iitus.kb51.jac;
 
+import static ru.bstu.iitus.kb51.jac.Constans.COUNT_HOUSE;
+import static ru.bstu.iitus.kb51.jac.Reader.getInt;
+
 class ApartmentHouse extends Building {
 
     private int countHouse;
@@ -12,19 +15,12 @@ class ApartmentHouse extends Building {
         return countHouse;
     }
 
-    public void init() {
-        setName(getString("Введите название: "));
-        setExploitationPeriod(getInt("Введите срок эксплуатации: "));
-        setCountHouse(getInt("Введите количество квартир: "));
-        setCountFloor(getInt("Количество этажей: "));
-        setMaterial(getString("Материал: "));
-    }
-
-    ApartmentHouse() {
-        init();
+    public void init() throws InputTypeException {
+        super.init();
+        setCountHouse(getInt(COUNT_HOUSE));
     }
 
     public String toString() {
-        return super.toString() + "количество квартир - " + getCountHouse() + "\n";
+        return super.toString() + COUNT_HOUSE + getCountHouse() + "\n";
     }
 }

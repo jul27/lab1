@@ -2,7 +2,11 @@ package ru.bstu.iitus.kb51.jac;
 
 import java.util.Scanner;
 
-public abstract class Construction {
+import static ru.bstu.iitus.kb51.jac.Constans.*;
+import static ru.bstu.iitus.kb51.jac.Reader.getInt;
+import static ru.bstu.iitus.kb51.jac.Reader.getString;
+
+public abstract class Construction implements Comparable<Construction> {
     private static final int SUPERMARKET = 0;
     private static final int PRIVATE_HOME = 1;
     private static final int APARTAMENT_HOUSE = 2;
@@ -15,7 +19,11 @@ public abstract class Construction {
     private int exploitationPeriod;
     private String name;
 
-    public abstract void init();
+    public void init() throws InputTypeException {
+        setName(getString(NAME));
+        setExploitationPeriod(getInt(EXPLOTATION_PERIOD));
+        setMaterial(getString(MATERIAL));
+    }
 
     public int getExploitationPeriod() {
         return exploitationPeriod;
@@ -42,34 +50,19 @@ public abstract class Construction {
     }
 
     public String toString() {
-        return ("название конструкции - " + getName() + "\nпериод эксплуатации - " + getExploitationPeriod() + "\n" + "материал" +
-                " конструкции - " + getMaterial() + "\n");
+        return (NAME + getName() + "\n" +
+                EXPLOTATION_PERIOD + getExploitationPeriod() + "\n" +
+                MATERIAL + getMaterial() + "\n");
     }
 
-    String getString(String informMessage) {
-        System.out.print(informMessage);
-        return SCANNER.next();
+    @Override
+    public int compareTo(Construction person) {
+        return getExploitationPeriod() - person.getExploitationPeriod();
     }
 
-    int getInt(String informMessage) {
-        System.out.print(informMessage);
-        return SCANNER.nextInt();
+    public static Construction create(int typePerson) throws IllegalAccessException, InstantiationException {
+        TypeConstruction type = TypeConstruction.getConstructionType(typePerson);
+        return type.getConstructionClass().newInstance();
     }
 
-    public static Construction create(int type) {
-        switch (type) {
-            case (SUPERMARKET):
-                return new Supermarket();
-            case (PRIVATE_HOME):
-                return new PrivateHome();
-            case (APARTAMENT_HOUSE):
-                return new ApartmentHouse();
-            case (BRIDGE):
-                return new Bridge();
-            case (TUNNEL):
-                return new Tunnel();
-            default:
-                return null;
-        }
-    }
 }

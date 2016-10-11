@@ -1,47 +1,38 @@
 import ru.bstu.iitus.kb51.jac.Construction;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
+import static java.lang.System.in;
+import static ru.bstu.iitus.kb51.jac.Constans.COUNT_OF_CONSTRUCTION;
+import static ru.bstu.iitus.kb51.jac.Reader.getInt;
+import static ru.bstu.iitus.kb51.jac.TypeConstruction.getAllTypes;
+
 public class Main {
-
-    private static final String TYPE_CONSTRUCT = "1 - Супермаркет\n" +
-            "2 - Частный дом\n" +
-            "3 - Многоквартирный дом\n" +
-            "4 - Мост\n" +
-            "5 - Тоннель\n" +
-            "Выбор: ";
-
-    public static void main(String[] args) {//todo
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Количество конструкций: ");
-        int countConstruction = scanner.nextInt();
-
-        Construction constructions[] = readConstructionInfo(scanner, countConstruction);
-        System.out.println(findMin(constructions).toString());
+    public static void main(String[] args) {
+        int countConstruction = getInt(COUNT_OF_CONSTRUCTION);
+        ArrayList<Construction> constructions = readConstructionInfo(countConstruction);
+        System.out.println(Collections.min(constructions));
     }
 
-    private static Construction[] readConstructionInfo(Scanner scanner, int countConstruction) {
-        Construction constructions[] = new Construction[countConstruction];
+    private static ArrayList<Construction> readConstructionInfo(int countConstruction) {
+        Scanner scanner = new Scanner(in);
+        String type = getAllTypes();
+        ArrayList<Construction> constructions = new ArrayList<Construction>();
         for (int i = 0; i < countConstruction; ) {
-            System.out.print(TYPE_CONSTRUCT);
-            int type = scanner.nextInt();
-            Construction construction = Construction.create(type);
-            if (construction != null) {
-                constructions[i] = construction;
+            System.out.print(type);
+            try {
+                Construction construction = Construction.create(scanner.nextInt());
+                construction.init();
+                constructions.add(construction);
                 i++;
+            } catch (IllegalAccessException | InstantiationException e) {
+                e.printStackTrace();
             }
         }
         return constructions;
     }
 
-    private static Construction findMin(Construction constructions[]) {
-        Construction min = constructions[0];
-        for (Construction construction : constructions) {
-            if (construction.getExploitationPeriod() < min.getExploitationPeriod()) {//
-                min = construction;
-            }
-        }
-        return min;
-    }
 }
 

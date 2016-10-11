@@ -1,8 +1,11 @@
 package ru.bstu.iitus.kb51.jac;
 
+import static ru.bstu.iitus.kb51.jac.Constans.COUNT_FLOOR;
+import static ru.bstu.iitus.kb51.jac.Reader.getInt;
+
 abstract class Building extends Construction {
 
-    private int countFloor;//  кол-во этажей или этаж??
+    private int countFloor;
 
     void setCountFloor(int countFloor) {
         this.countFloor = countFloor;
@@ -12,9 +15,12 @@ abstract class Building extends Construction {
         return countFloor;
     }
 
-    public abstract void init();
+    public void init() throws InputTypeException {
+        super.init();
+        setCountFloor(getInt(COUNT_FLOOR));
+    }
 
     public String toString() {
-        return super.toString() + "Количество этажей - " + getCountFloor() + "\n";
+        return super.toString() + COUNT_FLOOR + getCountFloor() + "\n";
     }
 }
